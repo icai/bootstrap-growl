@@ -10,6 +10,25 @@
 	var pluginName = "growl",
 		dataKey = "plugin_" + pluginName,
 		autoClear = true,
+		bindDefaultIconTitle = true,
+		iconTitle = {
+			success: {
+				title: ' Success: ',
+				icon: 'glyphicon glyphicon-ok-sign'
+			},
+			warning: {
+				title: ' Warning: ',
+				icon: 'glyphicon glyphicon-warning-sign'
+			},
+			info: {
+				title: ' Info: ',
+				icon: 'glyphicon glyphicon-info-sign'
+			},	
+			danger: {
+				title: ' Danger: ',
+				icon: 'glyphicon glyphicon-remove-sign'
+			}
+		},
 		defaults = {
 			element: 'body',
 			type: "info",
@@ -41,16 +60,19 @@
 		var content = {
 			content: {
 				message: typeof content == 'object' ? content.message : content,
-				title: content.title ? content.title : null,
-				icon: content.icon ? content.icon : null,
-				url: content.url ? content.url : null
+				title: content.title ? content.title : undefined,
+				icon: content.icon ? content.icon : undefined,
+				url: content.url ? content.url : undefined
 			}
 		};
 
 		options = $.extend(true, {}, content, options);
 		this.settings = $.extend(true, {}, defaults, options);
+		if(bindDefaultIconTitle){
+			this.settings  = $.extend(true, {}, { content: iconTitle[this.settings.type] }, this.settings);
+		}
 		plugin = this;
-		init(options, this.settings, plugin);	
+		init(options, this.settings, plugin);
 		this.$template = $template;	
 	},
 	init = function (options, settings, plugin) {
